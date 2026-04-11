@@ -2,7 +2,6 @@ const express = require("express");
 
 const bodyParser = require("body-parser");
 const { port } = require("./config/env");
-const connectToDB = require("./database/dbconnect");
 
 
 const app = express()
@@ -16,7 +15,6 @@ app.post("/info", (req, res) => {
     res.status(201).json(req.body)
 })
 app.listen(port, async () => {
-    await connectToDB()
     console.log(`Server is running at https//:localhost:${port}`)
 })
 
