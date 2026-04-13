@@ -20,6 +20,10 @@ const theatreSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: true
+    },
+    movies: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref:"Movie"
     }
 }, { timestamps: true })
 
