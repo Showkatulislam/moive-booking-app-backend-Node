@@ -60,9 +60,9 @@ const fetchAllTheatre = async (data) => {
     }
 }
 
-const update = async (id,data) => {
+const update = async (id, data) => {
     try {
-        const response = await Theatre.findByIdAndUpdate(id, data,{returnDocument:"after"})
+        const response = await Theatre.findByIdAndUpdate(id, data, { returnDocument: "after" })
         if (!response) {
             throw Error("Theatre is not Found.")
         }
@@ -71,11 +71,43 @@ const update = async (id,data) => {
         throw Error;
     }
 }
+/**
+ * 
+ * @param {*} theatreId 
+ * @param {*} movieIds 
+ * @param {*} insert 
+ * @returns 
+ */
+const updateMoviesInTheatre = async (theatreId, movieIds, insert) => {
+    const theatre = await Theatre.findById(theatreId)
+    if (!theatre) {
+        return {
+            err: "No such Theatre for provided Id.",
+            code: 404
+        }
+    }
+    if (insert) {
+        movieIds.forEach(movieId => {
+            theatre.movies.push(movieId)
+        })
+    } else {
+        let saveMovieIds = theatre.movies;
+        movieIds.forEach(movieId => {
+            saveMovieIds = saveMovieIds.filter(smi => movieId === smi);
+        })
+        theatre.movies = saveMovieIds;
+    }
+    await theatre.save();
+    return theatre;
+
+
+}
 module.exports = {
     createTheatre,
     destroy,
     getTheatreById,
     fetchAllTheatre,
-    update
+    update,
+    updateMoviesInTheatre
 }
 
