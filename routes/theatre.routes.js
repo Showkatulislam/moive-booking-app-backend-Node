@@ -19,7 +19,9 @@ const routes = (app) => {
         theatreControllers.updateMovies
     )
 
-    app.get("/mba/api/v1/theatres/:id/movies",theatreControllers.getMovies)
+    app.get("/mba/api/v1/theatres/:id/movies", theatreControllers.getMovies)
+    
+    app.get("/mba/api/v1/theatres/:theatreId/movies/:movieId",theatreControllers.checkMovie)
 }
 
 module.exports = routes
