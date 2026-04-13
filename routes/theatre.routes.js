@@ -18,6 +18,8 @@ const routes = (app) => {
     app.patch("/mba/api/v1/theatre/:id/movies",validateUpdateMovie,
         theatreControllers.updateMovies
     )
+
+    app.get("/mba/api/v1/theatres/:id/movies",theatreControllers.getMovies)
 }
 
 module.exports = routes
