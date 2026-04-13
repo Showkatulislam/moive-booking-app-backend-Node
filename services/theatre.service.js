@@ -1,3 +1,4 @@
+const movieModel = require("../models/movie.model");
 const Theatre = require("../models/theatre.model")
 
 const createTheatre = async (data) => {
@@ -46,6 +47,10 @@ const fetchAllTheatre = async (data) => {
         if (data && data.name) {
             query.name = data.name;
         }
+        if (data && data.movieId) {
+            let movie = await movieModel.findById(data.movieId);
+            query.movies = { $all: movie };
+        }
         if (data && data.limit) {
             pagination.limit = data.limit;
         }
@@ -79,28 +84,26 @@ const update = async (id, data) => {
  * @returns 
  */
 const updateMoviesInTheatre = async (theatreId, movieIds, insert) => {
-    const theatre = await Theatre.findById(theatreId)
-    if (!theatre) {
-        return {
-            err: "No such Theatre for provided Id.",
-            code: 404
+    try {
+        let theatre;
+        if (insert) {
+            theatre = await Theatre.findByIdAndUpdate(
+                { _id: theatreId },
+                { $addToSet: { movies: { $each: movieIds } } },
+                { returnDocument: "after" }
+            );
+        } else {
+            theatre = await Theatre.findByIdAndUpdate({ _id: theatreId },
+                { $pull: { movies: { $in: movieIds } } },
+                { returnDocument: "after" }
+            )
         }
-    }
-    if (insert) {
-        movieIds.forEach(movieId => {
-            theatre.movies.push(movieId)
-        })
-    } else {
-        let saveMovieIds = theatre.movies;
-        movieIds.forEach(movieId => {
-            saveMovieIds = saveMovieIds.filter(smi => movieId === smi);
-        })
-        theatre.movies = saveMovieIds;
-    }
-    await theatre.save();
-    return theatre;
 
+        return theatre.populate("movies")
 
+    } catch (error) {
+        throw error;
+    }
 }
 module.exports = {
     createTheatre,

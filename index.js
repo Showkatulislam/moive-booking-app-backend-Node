@@ -5,10 +5,12 @@ const { port } = require("./config/env");
 const connectDB = require("./database/connect-database");
 // import route 
 const movieRoute = require("./routes/movie.routes")
-const theatreRoute = require("./routes/theatre.routes")
+const theatreRoute = require("./routes/theatre.routes");
+const { default: mongoose } = require("mongoose");
 
 const app = express()
 app.use(bodyParser.json())
+mongoose.set("debug",true)
 
 
 movieRoute(app)
