@@ -8,6 +8,7 @@ const movieRoute = require("./routes/movie.routes")
 const theatreRoute = require("./routes/theatre.routes");
 const authRoute = require("./routes/auth.routes");
 const userRoute = require("./routes/user.routes");
+const bookingRoute = require("./routes/booking.routes");
 
 const app = express()
 app.use(bodyParser.json())
@@ -17,6 +18,7 @@ movieRoute(app)
 theatreRoute(app) // theatre routes
 authRoute(app)
 userRoute(app)
+bookingRoute(app)
 
 app.get("/ping", (req,res) => {
     res.status(200).json({message:"Server is running."})
