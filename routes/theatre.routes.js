@@ -1,22 +1,41 @@
 const theatreControllers = require("../controllers/theatre.controllers");
-const {isAuthenticated} = require("../middleware/auth.middleware");
+const {isAuthenticated, isAdminOrClient, isAdmin} = require("../middleware/auth.middleware");
 const validateTheatre = require("../middleware/theatreValidator");
 const validateUpdateMovie = require("../middleware/validateUpdateMovie");
 
 const routes = (app) => {
-    app.post("/mba/api/v1/theatre", validateTheatre, theatreControllers.create);
+    app.post("/mba/api/v1/theatre", 
+        isAuthenticated,
+        isAdminOrClient,
+        validateTheatre,
+        theatreControllers.create);
 
-    app.delete("/mba/api/v1/theatre/:id",isAuthenticated,theatreControllers.destroy)
+    app.delete("/mba/api/v1/theatre/:id",
+        isAuthenticated,
+        isAdminOrClient,
+        theatreControllers.destroy)
     
     app.get("/mba/api/v1/theatre/:id", theatreControllers.getTheatreById)
 
-    app.get("/mba/api/v1/theatre", theatreControllers.fetchAllTheatre)
+    app.get("/mba/api/v1/theatre",
+        isAuthenticated,
+        isAdmin,
+        theatreControllers.fetchAllTheatre)
     
-    app.put("/mba/api/v1/theatre/:id", theatreControllers.update)
+    app.put("/mba/api/v1/theatre/:id",
+        isAuthenticated,
+        isAdminOrClient,
+        theatreControllers.update)
     
-    app.patch("/mba/api/v1/theatre/:id", theatreControllers.update)
+    app.patch("/mba/api/v1/theatre/:id",
+        isAuthenticated,
+        isAdminOrClient,
+        theatreControllers.update)
 
-    app.patch("/mba/api/v1/theatre/:id/movies",validateUpdateMovie,
+    app.patch("/mba/api/v1/theatre/:id/movies",
+        validateUpdateMovie,
+        isAuthenticated,
+        isAdminOrClient,
         theatreControllers.updateMovies
     )
 
