@@ -1,5 +1,5 @@
 const theatreControllers = require("../controllers/theatre.controllers");
-const isAuthenticated = require("../middleware/auth.middleware");
+const {isAuthenticated} = require("../middleware/auth.middleware");
 const validateTheatre = require("../middleware/theatreValidator");
 const validateUpdateMovie = require("../middleware/validateUpdateMovie");
 
