@@ -1,5 +1,5 @@
 const { default: mongoose } = require("mongoose");
-
+const bcryptjs = require("bcryptjs")
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -30,6 +30,20 @@ const userSchema = new mongoose.Schema({
         default: "APPROVED"
     }
 }, { timestamps: true })
+
+userSchema.pre("save", async function () {
+    if (!this.isModified("password")) return;
+    console.log(this.password)
+    const salt = await bcryptjs.genSalt(10);
+    this.password = await bcryptjs.hash(this.password, salt);
+    console.log(this.password)
+
+});
+
+userSchema.methods.isValidPassword = async function (plainPassword) {
+    const compare = await bcryptjs.compare(plainPassword, this.password);
+    return compare;
+};
 
 const User = mongoose.model("User", userSchema);
 

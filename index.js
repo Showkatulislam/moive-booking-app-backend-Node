@@ -6,15 +6,16 @@ const connectDB = require("./database/connect-database");
 // import route 
 const movieRoute = require("./routes/movie.routes")
 const theatreRoute = require("./routes/theatre.routes");
+const authRoute = require("./routes/auth.routes");
 const { default: mongoose } = require("mongoose");
 
 const app = express()
 app.use(bodyParser.json())
-mongoose.set("debug",true)
 
 
 movieRoute(app)
 theatreRoute(app) // theatre routes
+authRoute(app)
 
 app.get("/ping", (req,res) => {
     res.status(200).json({message:"Server is running."})
