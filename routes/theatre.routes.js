@@ -9,7 +9,7 @@ const routes = (app) => {
     app.delete("/mba/api/v1/theatre/:id",isAuthenticated,theatreControllers.destroy)
     
     app.get("/mba/api/v1/theatre/:id", theatreControllers.getTheatreById)
-    
+
     app.get("/mba/api/v1/theatre", theatreControllers.fetchAllTheatre)
     
     app.put("/mba/api/v1/theatre/:id", theatreControllers.update)
