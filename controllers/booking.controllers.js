@@ -26,7 +26,45 @@ const update = async (req,res) => {
         return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errorResponseBody)
     }
 }
+const getBookings = async (req, res) => {
+    try {
+        const response = await bookingServices.getBookings({ userId: req.user.id })
+        successResponseBody.data = response;
+        successResponseBody.message = "Successfully fetched the booking"
+        return res.status(STATUS.OK).json(successResponseBody)
+    } catch (error) {
+        errorResponseBody.err = error;
+        return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errorResponseBody)
+    }
+}
+
+const getAllBookings = async (req, res) => {
+    try {
+        const response = await bookingServices.getAllBookings({ userId: req.user.id })
+        successResponseBody.data = response;
+        successResponseBody.message = "Successfully fetched the booking"
+        return res.status(STATUS.OK).json(successResponseBody)
+    } catch (error) {
+        errorResponseBody.err = error;
+        return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errorResponseBody)
+    }
+}
+const getBookingId = async (req, res) => {
+    try {
+        const response = await bookingServices.getBookingId(req.params.id, req.user.id);
+        successResponseBody.data = response;
+        successResponseBody.message = "Successfully fetched the booking."
+        return res.status(STATUS.OK).json(successResponseBody)
+    } catch (error) {
+        errorResponseBody.err = error;
+        errorResponseBody.message = error.message;
+        return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errorResponseBody)
+    }
+}
 module.exports = {
     create,
-    update
+    update,
+    getBookings,
+    getAllBookings,
+    getBookingId
 }
